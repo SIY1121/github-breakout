@@ -1,0 +1,13 @@
+{
+  "name": "GitHub Breakout",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "description": "ブロック崩し",
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["main.js"]
+    }
+  ]
+}
