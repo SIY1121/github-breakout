@@ -6,8 +6,8 @@ import { createShape } from "./utils";
 export class Ball implements GameObject, Circle {
   svg: SVGElement;
   el: SVGElement;
-  x = 100;
-  y = 150;
+  x: number;
+  y = 165;
 
   vx = 0;
   vy = 0;
@@ -16,10 +16,11 @@ export class Ball implements GameObject, Circle {
 
   constructor(el: SVGElement) {
     this.svg = el;
+    this.x = this.svg.getBoundingClientRect().width / 2;
     this.el = el.appendChild(
       createShape("circle", {
-        cx: 0,
-        cy: 0,
+        cx: this.x,
+        cy: this.y,
         r: this.r,
         fill: "red",
       })
@@ -50,6 +51,13 @@ export class Ball implements GameObject, Circle {
   start() {
     this.vx = 100
     this.vy = -100
+  }
+
+  reset() {
+    this.x = this.svg.getBoundingClientRect().width / 2;
+    this.y = 165;
+    this.el.setAttribute("cx", this.x.toString());
+    this.el.setAttribute("cy", this.y.toString());
   }
 
   onCollide(d: Direction) {

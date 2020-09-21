@@ -29,9 +29,9 @@ export class Player implements GameObject, Rect {
 
   vx = 0
 
-
   constructor(svg: SVGElement) {
     this.svg = svg;
+    this.x = this.svg.getBoundingClientRect().width / 2 - this.width / 2
     this.el = svg.appendChild(createShape("rect", {
       width: this.right - this.left,
       height: this.bottom - this.top,
@@ -51,6 +51,11 @@ export class Player implements GameObject, Rect {
 
   update(delta: number): void {
     this.x+=this.vx * delta;
+    this.el.setAttribute("x", this.x.toString())
+  }
+
+  reset() {
+    this.x = this.svg.getBoundingClientRect().width / 2 - this.width / 2
     this.el.setAttribute("x", this.x.toString())
   }
 }

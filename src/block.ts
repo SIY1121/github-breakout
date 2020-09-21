@@ -9,6 +9,9 @@ export class Block implements GameObject, Rect {
   top: number;
   bottom: number;
 
+  origianlLife: number
+  originalColor: string
+
   life: number;
   constructor(svg: SVGElement, el: SVGElement) {
     this.el = el;
@@ -19,7 +22,9 @@ export class Block implements GameObject, Rect {
     this.top = r.top - rr.top;
     this.bottom = r.bottom - rr.top;
 
-    this.life = Number(el.getAttribute("data-count"));
+    this.origianlLife = Number(el.getAttribute("data-count"));
+    this.life = this.origianlLife;
+    this.originalColor = el.getAttribute("fill") || "#ebedf0"
   }
   update(delta: number) {}
 
@@ -27,5 +32,11 @@ export class Block implements GameObject, Rect {
     this.life = 0;
     this.el.setAttribute("fill", "#ebedf0");
     this.el.setAttribute("data-count", "0");
+  }
+
+  reset() {
+    this.life = this.origianlLife
+    this.el.setAttribute("fill", this.originalColor);
+    this.el.setAttribute("data-count", this.origianlLife.toString());
   }
 }
