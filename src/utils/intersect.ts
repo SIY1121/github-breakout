@@ -1,4 +1,4 @@
-import { Circle, Rect } from './objects/shape'
+import { Circle, Rect } from '../objects/shape'
 
 export enum Direction {
   X,
@@ -7,6 +7,11 @@ export enum Direction {
   None,
 }
 
+/**
+ * 円と長方形の当たり判定＆向き判定
+ * @param c 円
+ * @param r 長方形
+ */
 export function intersectDirection(c: Circle, r: Rect): Direction {
   if (!intersect(c, r)) return Direction.None
 
@@ -17,6 +22,11 @@ export function intersectDirection(c: Circle, r: Rect): Direction {
   return Direction.XY
 }
 
+/**
+ * 円と長方形の当たり判定
+ * @param c 円
+ * @param r 長方形
+ */
 export function intersect(c: Circle, r: Rect): boolean {
   return (
     r.left - c.r < c.x &&

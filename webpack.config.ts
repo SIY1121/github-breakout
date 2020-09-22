@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { ConfigurationFactory } from 'webpack'
 import path from 'path'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
@@ -18,7 +17,7 @@ const webpackConfig: ConfigurationFactory = () => {
           test: /.tsx?$/,
           use: 'ts-loader',
           exclude: '/node_modules/',
-        }
+        },
       ],
     },
     resolve: {
@@ -26,9 +25,7 @@ const webpackConfig: ConfigurationFactory = () => {
     },
     plugins: [
       new CopyWebpackPlugin({
-        patterns: [
-          { from: 'public', to: '.' },
-        ]
+        patterns: [{ from: 'public', to: '.' }],
       }),
     ],
   }

@@ -1,23 +1,28 @@
 import { GameObject } from './gameObject'
-import { Direction } from '../intersect'
+import { Direction } from '../utils/intersect'
 import { Circle } from './shape'
-import { createShape } from '../domUtils'
+import { createShape } from '../utils/domUtils'
 
+const speed = 140
+
+/**
+ * ボール
+ */
 export class Ball implements GameObject, Circle {
-  svg: SVGElement
-  el: SVGElement
+  svgElement: SVGElement
+  ballElement: SVGElement
+
   x = 0
   y = 185
+  r = 5
 
   vx = 0
   vy = 0
 
-  r = 5
-
   constructor(el: SVGElement) {
-    this.svg = el
-    this.x = this.svg.getBoundingClientRect().width / 2
-    this.el = el.appendChild(
+    this.svgElement = el
+    this.x = this.svgElement.getBoundingClientRect().width / 2
+    this.ballElement = el.appendChild(
       createShape('circle', {
         cx: this.x,
         cy: this.y,
@@ -25,13 +30,14 @@ export class Ball implements GameObject, Circle {
         fill: 'red',
       })
     )
-    this.vx = 140
-    this.vy = -140
+    this.vx = speed
+    this.vy = -speed
   }
 
   update(delta: number): void {
+    //// 領域外に出ないように反射させる
     if (
-      this.x > this.svg.getBoundingClientRect().width - this.r ||
+      this.x > this.svgElement.getBoundingClientRect().width - this.r ||
       this.x < this.r
     ) {
       this.vx *= -1
@@ -41,22 +47,20 @@ export class Ball implements GameObject, Circle {
       this.vy *= -1
       this.y += this.vy / Math.abs(this.vy)
     }
+    ////
+
+    // 現在の速度から次の位置を設定
     this.x = this.x + this.vx * delta
     this.y = this.y + this.vy * delta
-    this.el.setAttribute('cx', this.x.toString())
-    this.el.setAttribute('cy', this.y.toString())
+    this.ballElement.setAttribute('cx', this.x.toString())
+    this.ballElement.setAttribute('cy', this.y.toString())
   }
 
-  reset() {
-    this.x = this.svg.getBoundingClientRect().width / 2
-    this.y = 185
-    this.vx = 140
-    this.vy = -140
-    this.el.setAttribute('cx', this.x.toString())
-    this.el.setAttribute('cy', this.y.toString())
-  }
-
-  onCollide(d: Direction, vx = 0) {
+  /**
+   * 物体にぶつかったときに呼び出される
+   * @param d 反射する方向
+   */
+  onCollide(d: Direction) {
     if (d === Direction.X) {
       this.vx *= -1
       this.x += this.vx / Math.abs(this.vx)
@@ -67,5 +71,14 @@ export class Ball implements GameObject, Circle {
       this.vx *= -1
       this.vy *= -1
     }
+  }
+
+  reset() {
+    this.x = this.svgElement.getBoundingClientRect().width / 2
+    this.y = 185
+    this.vx = speed
+    this.vy = -speed
+    this.ballElement.setAttribute('cx', this.x.toString())
+    this.ballElement.setAttribute('cy', this.y.toString())
   }
 }

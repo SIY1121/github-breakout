@@ -1,3 +1,6 @@
+/**
+ * 毎アニメーションフレームにupdateを呼ぶ
+ */
 export abstract class Game {
   private lastUpdtae = 0
 

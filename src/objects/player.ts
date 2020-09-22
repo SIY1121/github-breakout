@@ -1,7 +1,10 @@
 import { GameObject } from './gameObject'
 import { Rect } from './shape'
-import { createShape } from '../domUtils'
+import { createShape } from '../utils/domUtils'
 
+/**
+ * プレイヤーが動かすバー
+ */
 export class Player implements GameObject, Rect {
   x = 0
   y = 190
