@@ -29,11 +29,11 @@ export class Breakout extends Game {
   constructor(svgElement: SVGElement) {
     super()
     this.svgElement = svgElement
-    ;(async() => {
+    ;(async () => {
       this.initGameObject()
       await this.initUI()
       this.startGameLoop()
-    })
+    })()
   }
 
   initGameObject() {
@@ -77,7 +77,7 @@ export class Breakout extends Game {
   update(delta: number) {
     if (this.state !== State.Playing) return
 
-    // update objects 
+    // update objects
     this.ball.update(delta)
     this.player.update(delta)
     this.blocks.forEach((b) => b.update(delta))
