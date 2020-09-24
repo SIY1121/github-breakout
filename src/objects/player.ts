@@ -3,7 +3,7 @@ import { Rect } from './shape'
 import { createShape } from '../utils/domUtils'
 
 /**
- * プレイヤーが動かすバー
+ * player
  */
 export class Player implements GameObject, Rect {
   x = 0

@@ -17,7 +17,7 @@ export class Block implements GameObject, Rect {
   constructor(svgElement: SVGElement, el: SVGElement) {
     this.blockElement = el
 
-    // SVG内での座標を計算
+    // calculating coordinates in SVG
     const r = el.getBoundingClientRect()
     const rr = svgElement.getBoundingClientRect()
     this.right = r.right - rr.left
@@ -33,10 +33,10 @@ export class Block implements GameObject, Rect {
   update(delta: number) {}
 
   /**
-   * ボールと衝突した際に呼ばれる
+   * called when hit the ball
    */
   onCollide() {
-    this.life = 0 // -1とかにすればcontribution数だけライフを持ったブロックになる
+    this.life = 0 // breaks at once
     this.blockElement.setAttribute('fill', '#ebedf0')
     this.blockElement.setAttribute('data-count', '0')
   }

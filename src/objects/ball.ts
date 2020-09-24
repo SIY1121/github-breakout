@@ -6,7 +6,7 @@ import { createShape } from '../utils/domUtils'
 const speed = 140
 
 /**
- * ボール
+ * ball
  */
 export class Ball implements GameObject, Circle {
   svgElement: SVGElement
@@ -35,7 +35,7 @@ export class Ball implements GameObject, Circle {
   }
 
   update(delta: number): void {
-    //// 領域外に出ないように反射させる
+    //// prevent the ball to go out of the area
     if (
       this.x > this.svgElement.getBoundingClientRect().width - this.r ||
       this.x < this.r
@@ -49,7 +49,7 @@ export class Ball implements GameObject, Circle {
     }
     ////
 
-    // 現在の速度から次の位置を設定
+    // calc next position
     this.x = this.x + this.vx * delta
     this.y = this.y + this.vy * delta
     this.ballElement.setAttribute('cx', this.x.toString())
@@ -57,8 +57,8 @@ export class Ball implements GameObject, Circle {
   }
 
   /**
-   * 物体にぶつかったときに呼び出される
-   * @param d 反射する方向
+   * called when hit an object
+   * @param d direction to reflect
    */
   onCollide(d: Direction) {
     if (d === Direction.X) {

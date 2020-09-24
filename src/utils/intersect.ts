@@ -8,9 +8,9 @@ export enum Direction {
 }
 
 /**
- * 円と長方形の当たり判定＆向き判定
- * @param c 円
- * @param r 長方形
+ * collision detection with direction
+ * @param c circle
+ * @param r rectangle
  */
 export function intersectDirection(c: Circle, r: Rect): Direction {
   if (!intersect(c, r)) return Direction.None
@@ -23,9 +23,9 @@ export function intersectDirection(c: Circle, r: Rect): Direction {
 }
 
 /**
- * 円と長方形の当たり判定
- * @param c 円
- * @param r 長方形
+ * collision detection
+ * @param c circle
+ * @param r rectangle
  */
 export function intersect(c: Circle, r: Rect): boolean {
   return (

@@ -29,8 +29,11 @@ export class Breakout extends Game {
   constructor(svgElement: SVGElement) {
     super()
     this.svgElement = svgElement
-    this.initGameObject()
-    this.initUI()
+    ;(async() => {
+      this.initGameObject()
+      await this.initUI()
+      this.startGameLoop()
+    })
   }
 
   initGameObject() {
@@ -45,67 +48,69 @@ export class Breakout extends Game {
     this.scoreElement = this.svgElement.appendChild(
       createShape('text', { x: 20, y: 130 }, '')
     )
+
     this.headerElement = document.querySelector<HTMLElement>(
       '.js-yearly-contributions h2'
     )
+
     const uiContainer = document.querySelector('.js-calendar-graph')
     if (!uiContainer) return
-    const hs = await getHighScore()
+
     this.button = uiContainer.appendChild(
       createButton(this.blocks.length > 0 ? `Play!` : '🥺', () =>
         this.onButtonClick()
       )
     )
+
+    const hs = await getHighScore()
     this.footerElement = uiContainer.appendChild(
       createDivElement(
         hs > 0 ? `HighScore: ${hs}` : 'Press the arrow keys to play ←→'
       )
     )
-    this.init()
   }
 
   /**
-   * 毎アニメーションフレームで呼ばれる
-   * @param delta 前回update呼ばれてからの経過時間
+   * game loop
+   * @param delta time elapsed since the last time update was called
    */
   update(delta: number) {
     if (this.state !== State.Playing) return
 
-    // 更新
+    // update objects 
     this.ball.update(delta)
     this.player.update(delta)
     this.blocks.forEach((b) => b.update(delta))
 
-    // TODO すべてのブロックに対して当たり判定してるので空間分割とかで計算量減らしたい
-    let life = 0
+    // TODO reduce the computational cost
+    let remainingContributions = 0
     this.blocks
       .filter((b) => b.life > 0)
       .forEach((b) => {
-        life += b.life
-
         const d = intersectDirection(this.ball, b)
-        // ボールがブロックにぶつかったら
+        // the ball hit the block
         if (d !== Direction.None) {
           this.ball.onCollide(d)
           b.onCollide()
           this.score += b.origianlLife
         }
+        remainingContributions += b.life
       })
-    // ボールがバーにぶつかったら
+    // the ball hit the bar
     this.ball.onCollide(intersectDirection(this.ball, this.player))
 
-    // スコア更新
-    this.updateLabel(life)
+    // update score label
+    this.updateLabel(remainingContributions)
 
-    // 下に落ちたら終了
+    // gameover
     if (this.ball.y > 220) {
       this.state = State.Done
       this.button.textContent = 'GameOver!'
       saveScore(this.score)
     }
 
-    // 除草が完了したらクリア
-    if (life === 0) {
+    // clear
+    if (remainingContributions === 0) {
       this.state = State.Done
       this.button.textContent = 'Clear!'
       saveScore(this.score)
@@ -113,8 +118,8 @@ export class Breakout extends Game {
   }
 
   /**
-   * スコアラベルとcontributionラベルの更新
-   * @param contributons 残りcontributions
+   * update score and contribution label
+   * @param contributons remaining contributions
    */
   updateLabel(contributons: number) {
     const tmp = this.headerElement?.textContent?.match(/.*?[0-9,]+([\s\S]*)/m)
@@ -127,10 +132,10 @@ export class Breakout extends Game {
   }
 
   /**
-   * 下部のボタンをクリックした場合
+   * footer button
    */
   onButtonClick() {
-    // プレイする草がないユーザーには進捗を生んでもらう
+    // Can't play? Let's write the code!
     if (this.blocks.length === 0) {
       location.href = 'https://github.com/new'
       return
@@ -151,7 +156,7 @@ export class Breakout extends Game {
   }
 
   /**
-   * リセット
+   * Reset all status
    */
   async reset() {
     this.state = State.Ready

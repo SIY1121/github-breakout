@@ -8,4 +8,5 @@ Play breakout with the GitHub contributions graph!
 
 https://twitter.com/SIY1121/status/1308004558090768386
 
+Pure TypeScript with no frameworks.
 フレームワーク等は使っていないピュアなTypeScriptです。

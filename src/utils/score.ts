@@ -1,5 +1,5 @@
 /**
- * ハイスコアだった場合に保存する
+ * save high score
  * @param score
  */
 export async function saveScore(score: number) {
@@ -11,7 +11,7 @@ export async function saveScore(score: number) {
 }
 
 /**
- * 現在のurlでのハイスコアを返す
+ * return the high score on the current url
  */
 export async function getHighScore(): Promise<number> {
   return new Promise((resolve) =>

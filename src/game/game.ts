@@ -1,10 +1,10 @@
 /**
- * 毎アニメーションフレームにupdateを呼ぶ
+ * Call update on every animation frame
  */
 export abstract class Game {
   private lastUpdtae = 0
 
-  protected init() {
+  protected startGameLoop() {
     this.lastUpdtae = Date.now()
     requestAnimationFrame(() => this._update())
   }
