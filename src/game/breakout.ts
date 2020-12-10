@@ -88,18 +88,26 @@ export class Breakout extends Game {
 
     // TODO reduce the computational cost
     let remainingContributions = 0
+    let collideFlagX = false
+    let collideFlagY = false
     this.blocks
       .filter((b) => b.life > 0)
       .forEach((b) => {
         const d = intersectDirection(this.ball, b)
         // the ball hit the block
         if (d !== Direction.None) {
-          this.ball.onCollide(d)
           b.onCollide()
           this.score += b.origianlLife
+          collideFlagX ||= d == Direction.X || d == Direction.XY
+          collideFlagY ||= d == Direction.Y || d == Direction.XY
         }
         remainingContributions += b.life
       })
+
+    if (collideFlagX && collideFlagY) this.ball.onCollide(Direction.XY)
+    else if (collideFlagX) this.ball.onCollide(Direction.X)
+    else if (collideFlagY) this.ball.onCollide(Direction.Y)
+
     // the ball hit the bar
     this.ball.onCollide(intersectDirection(this.ball, this.player))
 
