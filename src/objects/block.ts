@@ -27,7 +27,8 @@ export class Block implements GameObject, Rect {
 
     this.origianlLife = Number(el.getAttribute('data-count'))
     this.life = this.origianlLife
-    this.originalColor = el.getAttribute('fill') || '#ebedf0'
+    this.originalColor =
+      el.getAttribute('fill') || 'var(--color-calendar-graph-day-bg)'
   }
 
   update(delta: number) {}
@@ -37,7 +38,7 @@ export class Block implements GameObject, Rect {
    */
   onCollide() {
     this.life = 0 // breaks at once
-    this.blockElement.setAttribute('fill', '#ebedf0')
+    this.blockElement.setAttribute('fill', 'var(--color-calendar-graph-day-bg)')
     this.blockElement.setAttribute('data-count', '0')
   }
 

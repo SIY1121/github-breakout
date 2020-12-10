@@ -46,7 +46,11 @@ export class Breakout extends Game {
 
   async initUI() {
     this.scoreElement = this.svgElement.appendChild(
-      createShape('text', { x: 20, y: 130 }, '')
+      createShape(
+        'text',
+        { x: 20, y: 130, fill: 'var(--color-text-primary)' },
+        ''
+      )
     )
 
     this.headerElement = document.querySelector<HTMLElement>(
