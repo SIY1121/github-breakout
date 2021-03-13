@@ -10,7 +10,7 @@ export class Block implements GameObject, Rect {
   bottom: number
 
   origianlLife: number
-  originalColor: string
+  originalColorLevel: string
 
   life: number
 
@@ -27,8 +27,7 @@ export class Block implements GameObject, Rect {
 
     this.origianlLife = Number(el.getAttribute('data-count'))
     this.life = this.origianlLife
-    this.originalColor =
-      el.getAttribute('fill') || 'var(--color-calendar-graph-day-bg)'
+    this.originalColorLevel = el.getAttribute('data-level') || '0'
   }
 
   update(delta: number) {}
@@ -40,11 +39,12 @@ export class Block implements GameObject, Rect {
     this.life = 0 // breaks at once
     this.blockElement.setAttribute('fill', 'var(--color-calendar-graph-day-bg)')
     this.blockElement.setAttribute('data-count', '0')
+    this.blockElement.setAttribute('data-level', '0')
   }
 
   reset() {
     this.life = this.origianlLife
-    this.blockElement.setAttribute('fill', this.originalColor)
+    this.blockElement.setAttribute('data-level', this.originalColorLevel)
     this.blockElement.setAttribute('data-count', this.origianlLife.toString())
   }
 }
